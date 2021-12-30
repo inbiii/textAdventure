@@ -2,7 +2,7 @@ const express = require('express');
 const app = express();
 const port = 3040;
 app.set("view engine", 'ejs');
-
+app.use(express.static(__dirname + '/public'));
 ////////////////////////////////////////////Routes
 app.get('/', (req, res) => {
     res.render('title')

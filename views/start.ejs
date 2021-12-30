@@ -5,21 +5,24 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="/css/style.css" rel="stylesheet" type="text/css">
     <title>Document</title>
 </head>
 
 <body>
-    <div>
-        <h2>start</h2>
+    <div class="game--box">
+        <h2>The Hunt is Afoot</h2>
         <p>
             <%= message %>
         </p>
+        <div class="btn--box">
 
-        <% btns.forEach( (el, i)=> {%>
-            <a href="<%= pths[i]%>">
-                <%=el%>
-            </a>
-            <% }) %>
+            <% btns.forEach( (el, i)=> {%>
+                <a href="<%= pths[i]%>">
+                    <%=el%>
+                </a>
+                <% }) %>
+        </div>
     </div>
 </body>
 
