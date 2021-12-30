@@ -32,7 +32,7 @@ app.get('/goIn', (req, res) => {
         message: `A large shape hidden by the shadows cast from the torch you brought
         skulks silently and slowly. 
         <br><br>
-        "Answer my riddles three, and you make pass," it purrs.
+        "Answer my riddles three, and you may pass," it purrs.
         <br><br>
         "What with one voice, has four-feet, two, then three?"
          `,
