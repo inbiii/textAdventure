@@ -79,7 +79,7 @@ app.get('/next', (req, res) => {
     res.render('start', {
         title: 'The Hunt is Afoot',
         message: `You walk past the sphynx and deeper into the cave, and hear the roar of a crowd.
-        You see a bright opening and walk towards it.As you walk into it, the room falls
+        You see a bright opening and walk towards it. As you walk into it, the room falls
          silent, and its filled to the brim with a hodgepodge of different goblins.
         They all look at you and you hear a minotaur wearing a powdered wig at the end of the room, whos sitting at 
         a large podium say,
@@ -151,7 +151,7 @@ app.get('/yeti', (req, res) => {
     res.render('start', {
         title: 'The Hunt is Afoot',
         message: `"I'm just under a lot of stress sourcing the local ingredients
-        and trying to make this location work.I definitely yelled at one of the local farmers, I'm sorry." 
+        and trying to make this location work. I definitely yelled at one of the local farmers, I'm sorry." 
         <br><br>
         The yeti seems mentally preoccupied, and you see over the thick matted hair on its shoulder a picture of
     this yeti holding two smaller yetis and smiling.
