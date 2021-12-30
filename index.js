@@ -202,7 +202,7 @@ app.get('/endFin', (req, res) => {
         title: 'A Terrible Loss',
         message: `The Yeti doesn't put up a fight, simply lets you finish it's existence. You see it when you look in the Yeti's eyes, relief from all the stress. <br>
         <br> As you look over the blood stained counter, you see the picture of the Yeti's family together, and overcome with grief you realize something you never had before.
-        <br><br> A healthy worklife balance is important.<br>`,
+        <br><br> A healthy work / life balance is important.<br>`,
         btns: ['Oh god what have I done!'],
         pths: ['/start']
     })
