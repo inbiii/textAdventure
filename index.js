@@ -64,7 +64,7 @@ app.get('/pass1', (req, res) => {
         <br><br>
         "Are you doing a crossword?"
         <br><br>
-        "Yeah, so what if I am," said the Sphynx in a defensive tone.<br>
+        "Yeah, so what if I am," said the Sphynx in a defensive tone. 
         "This is my house, you came wandering in, its not all roar and terrorize,
         sometimes I need to do things to recharge."
         <br><br>
