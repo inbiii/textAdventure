@@ -11,19 +11,14 @@
 
 <body>
     <div class="game--box">
-        <h2>
-            <%= title %>
-        </h2>
+        <h2>YOU WIN!</h2>
         <p>
-            <%- message %>
+            Congrats, you've made a profitable investment!
+            <br>Adventuring is a fool's game when you're loaded.
+            <br>Welcome to the free market baby.
         </p>
         <div class="btn--box">
-
-            <% btns.forEach( (el, i)=> {%>
-                <a href="<%= pths[i]%>">
-                    <%=el%>
-                </a>
-                <% }) %>
+            <a href="/start"> Run it Back</a>
         </div>
     </div>
 </body>

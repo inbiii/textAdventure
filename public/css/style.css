@@ -21,6 +21,16 @@ body{
     margin: 4rem;
 }
 
+.game--title {
+    font-size: 4rem;
+    border: 1px solid rgba(235, 235, 235, 0.877);
+    color: rgb(22, 22, 22);
+    background-color: rgba(235, 235, 235, 0.877);
+    padding: 2rem 2.5rem;
+    margin-bottom: 3rem;
+    border-radius: 10px;
+}
+
 .game--box {
     background-color: rgb(22, 22, 22);
     border: 1px solid rgba(235, 235, 235, 0.877);
@@ -64,7 +74,7 @@ a{
     color: rgb(22, 22, 22);
     max-width: 30%;
     align-self: flex-start;
-    border
+    border-radius: 10px;
 }
 
 .btn--box{
