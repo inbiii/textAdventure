@@ -2,6 +2,7 @@ const { Router } = require('express');
 const express = require('express');
 const app = express();
 var session = require('express-session');
+const { redirect } = require('express/lib/response');
 const fs = require('fs');
 const port = process.env.PORT || 3400;
 const router = express.Router();
@@ -40,6 +41,7 @@ realTime();
 
 let loggedIn = false;
 
+let invalidUser = false;
 
 
 
@@ -55,7 +57,7 @@ app.get('/', (req, res) => {
 })
 
 app.get('/login', (req, res) => {
-    res.render('login');
+    res.render('login', { invalid_user: invalidUser });
 })
 
 app.post('/login', (req, res) => {
@@ -67,12 +69,15 @@ app.post('/login', (req, res) => {
 
     if (foundUser) {
         req.session.username = user;
-        loggedIn = true;
         res.redirect('/')
+        invalidUser = false;
+        loggedIn = true;
     } else {
         req.session.destroy(() => {
             console.log('user reset')
         })
+        invalidUser = true;
+        res.redirect('/login')
     }
 })
 
