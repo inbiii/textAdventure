@@ -1,14 +1,107 @@
+const { Router } = require('express');
 const express = require('express');
 const app = express();
+var session = require('express-session');
+const fs = require('fs');
 const port = process.env.PORT || 3400;
-app.set("view engine", 'ejs');
-app.use(express.static(__dirname + '/public'));
-////////////////////////////////////////////Routes
-app.get('/', (req, res) => {
-    res.render('title')
+const router = express.Router();
+
+router.get('/*', (req, res, next) => {
+    if ((req.session && req.session.username) || req.path == '/sgnup' || req.path == '/login') {
+        console.log(loggedIn);
+        next();
+    }
+    else {
+        res.redirect('/login')
+    }
 })
 
+app.set("view engine", 'ejs');
+
+app.use(express.static(__dirname + '/public'));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(session({
+    secret: "sdas.",
+    resave: false,
+    saveUnitialized: true,
+    cookie: { secure: false }
+}));
+app.use('/', router)
+
+////////////////////////////////////VARS
+let data;
+
+const realTime = () => {
+    data = JSON.parse(fs.readFileSync('./data/users.json'
+    ))
+}
+realTime();
+
+let loggedIn = false;
+
+
+
+
+////////////////////////////////////////////Routes
+app.get('/', (req, res) => {
+    if (req.session && req.session.username && loggedIn) {
+
+        res.render('title', { my_user: req.session.username })
+    }
+    else {
+        res.redirect('/login')
+    }
+})
+
+app.get('/login', (req, res) => {
+    res.render('login');
+})
+
+app.post('/login', (req, res) => {
+    const user = req.body.username;
+    const pass = req.body.password;
+    const foundUser = data.users.find(usr => {
+        return usr.user == user && usr.pass == pass;
+    })
+
+    if (foundUser) {
+        req.session.username = user;
+        loggedIn = true;
+        res.redirect('/')
+    } else {
+        req.session.destroy(() => {
+            console.log('user reset')
+        })
+    }
+})
+
+app.get('/sgnup', (req, res) => {
+    res.render('signup')
+})
+
+app.post('/sgnup', (req, res) => {
+    const user = req.body.username;
+    const pass = req.body.password;
+    // req.session.username = user;
+    // req.session.password = pass;
+    if (user && pass && user != '' && pass != '') {
+        data.users.push({ user, pass });
+
+        fs.writeFileSync("./data/users.json", JSON.stringify(data), err => {
+            if (err) console.log("error writing file;", err);
+            if (!err) console.log('written succesfully');
+        })
+        res.redirect(`/login`);
+    } else {
+        res.redirect('/sgnup')
+    }
+
+})
+
+
 app.get('/start', (req, res) => {
+
     res.render('start', {
         title: 'The Hunt is Afoot',
         message: `A town terrorized by three monsters seeks someone brave
@@ -27,6 +120,7 @@ app.get('/start', (req, res) => {
 })
 
 app.get('/goIn', (req, res) => {
+
     res.render('start', {
         title: 'The Hunt is Afoot',
         message: `A large shape hidden by the shadows cast from the torch you brought
@@ -42,6 +136,7 @@ app.get('/goIn', (req, res) => {
 })
 
 app.get('/pass', (req, res) => {
+
     res.render('start', {
         title: 'The Hunt is Afoot',
         message: `Coming close to the light of torch, the sphynx reveals its face.
@@ -55,6 +150,7 @@ app.get('/pass', (req, res) => {
 })
 
 app.get('/pass1', (req, res) => {
+
     res.render('start', {
         title: 'The Hunt is Afoot',
         message: `"No its 11 letters long"
@@ -76,6 +172,7 @@ app.get('/pass1', (req, res) => {
 })
 
 app.get('/next', (req, res) => {
+
     res.render('start', {
         title: 'The Hunt is Afoot',
         message: `You walk past the sphynx and deeper into the cave, and hear the roar of a crowd.
@@ -97,6 +194,7 @@ app.get('/next', (req, res) => {
 })
 
 app.get('/notguilty', (req, res) => {
+
     res.render('start', {
         title: 'The Hunt is Afoot',
         message: `"Well, what defense do you have?"`,
@@ -106,6 +204,7 @@ app.get('/notguilty', (req, res) => {
 })
 
 app.get('/defense', (req, res) => {
+
     res.render('start', {
         title: 'The Hunt is Afoot',
         message: `
@@ -121,6 +220,7 @@ app.get('/defense', (req, res) => {
 })
 
 app.get('/next2', (req, res) => {
+
     res.render('start', {
         title: 'The Hunt is Afoot',
         message: `
@@ -139,6 +239,7 @@ You look up and read the menu beautifully chalked above him.
 })
 
 app.get('/ice', (req, res) => {
+
     res.render('start', {
         title: 'The Hunt is Afoot',
         message: `It's the best ice cream you've ever had.`,
@@ -148,6 +249,7 @@ app.get('/ice', (req, res) => {
 })
 
 app.get('/yeti', (req, res) => {
+
     res.render('start', {
         title: 'The Hunt is Afoot',
         message: `"I'm just under a lot of stress sourcing the local ingredients
@@ -166,6 +268,7 @@ app.get('/yeti', (req, res) => {
 })
 
 app.get('/deadend', (req, res) => {
+
     res.render('end', {
         message: `
         `,
@@ -175,6 +278,7 @@ app.get('/deadend', (req, res) => {
 })
 
 app.get('/end1', (req, res) => {
+
     res.render('start', {
         title: 'Lazy Ending',
         message: `You go home and lay in your comfy bed. <br>
@@ -186,6 +290,7 @@ app.get('/end1', (req, res) => {
 })
 
 app.get('/end2', (req, res) => {
+
     res.render('start', {
         title: 'Justice is Served',
         message: `You serve your sentence respectfully. <br>
@@ -198,6 +303,7 @@ app.get('/end2', (req, res) => {
 })
 
 app.get('/endFin', (req, res) => {
+
     res.render('start', {
         title: 'A Terrible Loss',
         message: `The Yeti doesn't put up a fight, simply lets you finish it's existence. You see it when you look in the Yeti's eyes, relief from all the stress. <br>
@@ -209,6 +315,7 @@ app.get('/endFin', (req, res) => {
 })
 
 app.get('/badend', (req, res) => {
+
     res.render('start', {
         title: 'Not my Business',
         message: `You go home, but have this sinking feeling<br><br>
@@ -219,6 +326,7 @@ app.get('/badend', (req, res) => {
 })
 
 app.get('/goodend', (req, res) => {
+
     res.render('start', {
         title: 'You Win!',
         message: `Congrats! You've developed a market need for real estate.<br><br>
@@ -230,6 +338,7 @@ app.get('/goodend', (req, res) => {
 })
 
 app.get('/goodend', (req, res) => {
+
     res.render('trueend', {
         message: `
         `,
